@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Career Target Tracker</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #647084;
+      --line: #d9e1ea;
+      --surface: #ffffff;
+      --page: #f5f7fb;
+      --blue: #2764d8;
+      --blue-soft: #eaf1ff;
+      --green: #168363;
+      --green-soft: #e8f6f1;
+      --amber: #a76600;
+      --amber-soft: #fff5dd;
+      --red: #b83a44;
+      --red-soft: #fff0f1;
+      --shadow: 0 12px 28px rgba(24, 33, 47, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--page);
+    }
+
+    .shell {
+      width: min(1400px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 18px 0 32px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 10px 0 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .source-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .tabs {
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #edf2f7;
+      margin: 2px 0 12px;
+    }
+
+    .tab {
+      min-height: 34px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(24, 33, 47, 0.08);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .stat {
+      min-height: 76px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, minmax(132px, 1fr)) auto;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    input, select, button {
+      width: 100%;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+
+    input, select {
+      padding: 0 12px;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 0 14px;
+      font-weight: 700;
+    }
+
+    button:hover, a.career:hover, .tab:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .blotter {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      max-height: calc(100vh - 275px);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1220px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      height: 40px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      height: 44px;
+      padding: 7px 10px;
+      border-bottom: 1px solid #edf1f6;
+      color: #2d3747;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: #f7fbff;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .company-cell {
+      font-weight: 800;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .notes-cell {
+      max-width: 310px;
+      color: #475366;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .num-cell {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #eef3f8;
+      color: #435065;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .fit {
+      min-width: 42px;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    a.career {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      background: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .domain {
+      color: var(--muted);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .empty {
+      display: none;
+      margin-top: 18px;
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .openings-placeholder {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .placeholder-body {
+      padding: 32px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .tag-green { background: var(--green-soft); color: var(--green); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber); }
+    .tag-red { background: var(--red-soft); color: var(--red); }
+
+    @media (max-width: 920px) {
+      header, .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); padding-top: 14px; }
+      .stats { grid-template-columns: 1fr; }
+      .toolbar { position: static; }
+      .source-pill { white-space: normal; }
+      .tabs { width: 100%; grid-auto-flow: row; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <h1>Career Blotter</h1>
+        <p class="subtitle">Merged career target list with no duplicate companies, Tier, category, Bangalore presence, PM leanness, fit, notes, and career-site actions.</p>
+      </div>
+      <div class="source-pill">Source: Jobs.xlsx</div>
+    </header>
+
+    <nav class="tabs" aria-label="Views">
+      <button class="tab active" type="button" data-tab="companies">Company Blotter</button>
+      <button class="tab" type="button" data-tab="openings">Relevant Openings</button>
+    </nav>
+
+    <section id="companiesPanel" class="panel active">
+      <section class="stats" aria-label="Summary">
+        <div class="stat"><span>Visible Rows</span><strong id="statTotal">0</strong></div>
+        <div class="stat"><span>A+ Targets</span><strong id="statTop">0</strong></div>
+        <div class="stat"><span>Bangalore Yes</span><strong id="statBlr">0</strong></div>
+        <div class="stat"><span>Categories</span><strong id="statCategories">0</strong></div>
+      </section>
+
+      <section class="toolbar" aria-label="Filters">
+        <input id="search" type="search" placeholder="Search company, notes, category...">
+        <select id="tier">
+          <option value="">All tiers</option>
+          <option value="Tier 1">Tier 1</option>
+          <option value="Tier 2">Tier 2</option>
+          <option value="Tier 3">Tier 3</option>
+        </select>
+        <select id="category">
+          <option value="">All categories</option>
+          <option value="AI">AI</option>
+<option value="AI Frameworks">AI Frameworks</option>
+<option value="AI Hardware">AI Hardware</option>
+<option value="AI Infra">AI Infra</option>
+<option value="AI Infrastructure">AI Infrastructure</option>
+<option value="AI Platform">AI Platform</option>
+<option value="AI Tooling">AI Tooling</option>
+<option value="Automation">Automation</option>
+<option value="Collaboration">Collaboration</option>
+<option value="Data &amp; AI">Data &amp; AI</option>
+<option value="Data Infrastructure">Data Infrastructure</option>
+<option value="Data Platform">Data Platform</option>
+<option value="Database">Database</option>
+<option value="Defense Tech">Defense Tech</option>
+<option value="Dev Tools">Dev Tools</option>
+<option value="Developer Platform">Developer Platform</option>
+<option value="Developer Tools">Developer Tools</option>
+<option value="Enterprise AI">Enterprise AI</option>
+<option value="Enterprise Workflow">Enterprise Workflow</option>
+<option value="Fintech">Fintech</option>
+<option value="Fintech/Data">Fintech/Data</option>
+<option value="Graph DB">Graph DB</option>
+<option value="Infrastructure">Infrastructure</option>
+<option value="Internal Tools">Internal Tools</option>
+<option value="Observability">Observability</option>
+<option value="Process Mining">Process Mining</option>
+<option value="SaaS">SaaS</option>
+<option value="Search Platform">Search Platform</option>
+<option value="Security">Security</option>
+<option value="Vector DB">Vector DB</option>
+<option value="Workflow SaaS">Workflow SaaS</option>
+        </select>
+        <select id="fit">
+          <option value="">All fit scores</option>
+          <option value="A">A</option>
+<option value="A+">A+</option>
+<option value="B+">B+</option>
+<option value="Dream">Dream</option>
+        </select>
+        <select id="lean">
+          <option value="">All PM leanness</option>
+          <option value="Extremely Lean">Extremely Lean</option>
+<option value="Lean">Lean</option>
+<option value="Moderate">Moderate</option>
+<option value="Very Lean">Very Lean</option>
+        </select>
+        <select id="presence">
+          <option value="">All presence</option>
+          <option value="Growing">Growing</option>
+<option value="Limited">Limited</option>
+<option value="Remote">Remote</option>
+<option value="Yes">Yes</option>
+        </select>
+        <button id="clear" type="button">Clear</button>
+      </section>
+
+      <section class="blotter" aria-live="polite">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Tier</th>
+                <th>Category</th>
+                <th>Employees</th>
+                <th>Bangalore</th>
+                <th>PM Leanness</th>
+                <th>Fit</th>
+                <th>Notes</th>
+                <th>Career Site</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="empty" class="empty">No matching rows.</section>
+    </section>
+
+    <section id="openingsPanel" class="panel">
+      <section class="stats" aria-label="Openings Summary">
+        <div class="stat"><span>Matched Jobs</span><strong>0</strong></div>
+        <div class="stat"><span>High Fit</span><strong>0</strong></div>
+        <div class="stat"><span>Bangalore/Remote</span><strong>0</strong></div>
+        <div class="stat"><span>Companies</span><strong>0</strong></div>
+      </section>
+      <section class="openings-placeholder">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>Match</th>
+                <th>Posted</th>
+                <th>Source</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="placeholder-body">No openings loaded yet.</div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const jobs = [{"Company": "Databricks", "Category": "Data & AI", "Approx Employees": "10000+", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A+", "Notes": "AI, data platform", "Career Site": "https://www.databricks.com/company/careers", "Search Text": "databricks data & ai tier 2 10000+ yes very lean a+ ai, data platform https://www.databricks.com/company/careers", "Tier": "Tier 2"}, {"Company": "Snowflake", "Category": "Data & AI", "Approx Employees": "9000", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A+", "Notes": "Data cloud", "Career Site": "https://careers.snowflake.com/", "Search Text": "snowflake data & ai tier 2 9000 yes very lean a+ data cloud https://careers.snowflake.com/", "Tier": "Tier 2"}, {"Company": "Confluent", "Category": "Data Infrastructure", "Approx Employees": "5000", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A+", "Notes": "Event streaming", "Career Site": "https://www.confluent.io/careers/", "Search Text": "confluent data infrastructure tier 3 5000 yes very lean a+ event streaming https://www.confluent.io/careers/", "Tier": "Tier 3"}, {"Company": "BrowserStack", "Category": "Developer Tools", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A+", "Notes": "Test automation", "Career Site": "https://www.browserstack.com/careers", "Search Text": "browserstack developer tools tier 2 1500 yes very lean a+ test automation https://www.browserstack.com/careers", "Tier": "Tier 2"}, {"Company": "Postman", "Category": "Developer Tools", "Approx Employees": "2200", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A+", "Notes": "APIs", "Career Site": "https://www.postman.com/company/careers/", "Search Text": "postman developer tools tier 2 2200 yes very lean a+ apis https://www.postman.com/company/careers/", "Tier": "Tier 2"}, {"Company": "MongoDB", "Category": "Database", "Approx Employees": "6000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Database platform", "Career Site": "https://www.mongodb.com/company/careers", "Search Text": "mongodb database tier 2 6000 yes lean a database platform https://www.mongodb.com/company/careers", "Tier": "Tier 2"}, {"Company": "DataDog", "Category": "Observability", "Approx Employees": "7000", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "Monitoring", "Career Site": "https://careers.datadoghq.com/", "Search Text": "datadog observability tier 3 7000 yes very lean a monitoring https://careers.datadoghq.com/", "Tier": "Tier 3"}, {"Company": "Glean", "Category": "Enterprise AI", "Approx Employees": "1200", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "Enterprise search", "Career Site": "https://www.glean.com/careers", "Search Text": "glean enterprise ai tier 2 1200 yes very lean a enterprise search https://www.glean.com/careers", "Tier": "Tier 2"}, {"Company": "Whatfix", "Category": "Workflow SaaS", "Approx Employees": "1600", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Digital adoption", "Career Site": "https://whatfix.com/careers/", "Search Text": "whatfix workflow saas tier 2 1600 yes lean a digital adoption https://whatfix.com/careers/", "Tier": "Tier 2"}, {"Company": "Atlassian", "Category": "Collaboration", "Approx Employees": "13000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Workflow products", "Career Site": "https://www.atlassian.com/company/careers", "Search Text": "atlassian collaboration tier 2 13000 yes lean a workflow products https://www.atlassian.com/company/careers", "Tier": "Tier 2"}, {"Company": "ServiceNow", "Category": "Enterprise Workflow", "Approx Employees": "28000", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A", "Notes": "Large workflow ecosystem", "Career Site": "https://www.servicenow.com/careers.html", "Search Text": "servicenow enterprise workflow tier 2 28000 yes moderate a large workflow ecosystem https://www.servicenow.com/careers.html", "Tier": "Tier 2"}, {"Company": "Observe.AI", "Category": "Enterprise AI", "Approx Employees": "800", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "Contact center AI", "Career Site": "https://www.observe.ai/careers", "Search Text": "observe.ai enterprise ai tier 2 800 yes very lean a contact center ai https://www.observe.ai/careers", "Tier": "Tier 2"}, {"Company": "Hasura", "Category": "Developer Platform", "Approx Employees": "300", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "GraphQL", "Career Site": "https://hasura.io/careers/", "Search Text": "hasura developer platform tier 2 300 yes very lean a graphql https://hasura.io/careers/", "Tier": "Tier 2"}, {"Company": "Sarvam AI", "Category": "AI", "Approx Employees": "300", "Bangalore Presence": "Yes", "PM Leanness": "Extremely Lean", "Fit For Vikas": "A", "Notes": "Indian LLM", "Career Site": "https://www.sarvam.ai/careers", "Search Text": "sarvam ai ai tier 2 300 yes extremely lean a indian llm https://www.sarvam.ai/careers", "Tier": "Tier 2"}, {"Company": "TrueFoundry", "Category": "AI Infra", "Approx Employees": "300", "Bangalore Presence": "Yes", "PM Leanness": "Extremely Lean", "Fit For Vikas": "A", "Notes": "MLOps", "Career Site": "https://www.truefoundry.com/careers", "Search Text": "truefoundry ai infra tier 2 300 yes extremely lean a mlops https://www.truefoundry.com/careers", "Tier": "Tier 2"}, {"Company": "Weights & Biases", "Category": "AI Tooling", "Approx Employees": "1000", "Bangalore Presence": "Yes", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "ML tooling", "Career Site": "https://wandb.ai/careers", "Search Text": "weights & biases ai tooling tier 2 1000 yes very lean a ml tooling https://wandb.ai/careers", "Tier": "Tier 2"}, {"Company": "Hugging Face", "Category": "AI Platform", "Approx Employees": "1000", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Open AI ecosystem", "Career Site": "https://huggingface.co/jobs", "Search Text": "hugging face ai platform tier 2 1000 remote lean a open ai ecosystem https://huggingface.co/jobs", "Tier": "Tier 2"}, {"Company": "Scale AI", "Category": "AI Infrastructure", "Approx Employees": "3000+", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Data infrastructure", "Career Site": "https://scale.com/careers", "Search Text": "scale ai ai infrastructure tier 2 3000+ yes lean a data infrastructure https://scale.com/careers", "Tier": "Tier 2"}, {"Company": "LangChain", "Category": "AI Frameworks", "Approx Employees": "300", "Bangalore Presence": "Remote", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "Agent ecosystem", "Career Site": "https://www.langchain.com/careers", "Search Text": "langchain ai frameworks tier 2 300 remote very lean a agent ecosystem https://www.langchain.com/careers", "Tier": "Tier 2"}, {"Company": "Together AI", "Category": "AI Infra", "Approx Employees": "500", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Foundation models", "Career Site": "https://www.together.ai/careers", "Search Text": "together ai ai infra tier 2 500 remote lean a foundation models https://www.together.ai/careers", "Tier": "Tier 2"}, {"Company": "Groq", "Category": "AI Hardware", "Approx Employees": "1000", "Bangalore Presence": "Growing", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "AI inference", "Career Site": "https://groq.com/careers/", "Search Text": "groq ai hardware tier 2 1000 growing lean a ai inference https://groq.com/careers/", "Tier": "Tier 2"}, {"Company": "NVIDIA", "Category": "AI Infrastructure", "Approx Employees": "36000+", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "AI hardware/software", "Career Site": "https://www.nvidia.com/en-us/about-nvidia/careers/", "Search Text": "nvidia ai infrastructure tier 3 36000+ yes lean a ai hardware/software https://www.nvidia.com/en-us/about-nvidia/careers/", "Tier": "Tier 3"}, {"Company": "Cloudflare", "Category": "Infrastructure", "Approx Employees": "4500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Internet platform", "Career Site": "https://www.cloudflare.com/careers/", "Search Text": "cloudflare infrastructure tier 3 4500 yes lean a internet platform https://www.cloudflare.com/careers/", "Tier": "Tier 3"}, {"Company": "HashiCorp", "Category": "Infrastructure", "Approx Employees": "2500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Infrastructure automation", "Career Site": "https://www.hashicorp.com/careers", "Search Text": "hashicorp infrastructure tier 3 2500 yes lean a infrastructure automation https://www.hashicorp.com/careers", "Tier": "Tier 3"}, {"Company": "Elastic", "Category": "Search Platform", "Approx Employees": "3000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Search & analytics", "Career Site": "https://www.elastic.co/careers", "Search Text": "elastic search platform tier 3 3000 yes lean a search & analytics https://www.elastic.co/careers", "Tier": "Tier 3"}, {"Company": "Grafana Labs", "Category": "Observability", "Approx Employees": "2500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Monitoring", "Career Site": "https://grafana.com/about/careers/", "Search Text": "grafana labs observability tier 3 2500 yes lean a monitoring https://grafana.com/about/careers/", "Tier": "Tier 3"}, {"Company": "Fivetran", "Category": "Data Platform", "Approx Employees": "3000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Data movement", "Career Site": "https://www.fivetran.com/careers", "Search Text": "fivetran data platform tier 2 3000 yes lean a data movement https://www.fivetran.com/careers", "Tier": "Tier 2"}, {"Company": "Airbyte", "Category": "Data Platform", "Approx Employees": "500", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Open source ETL", "Career Site": "https://airbyte.com/careers", "Search Text": "airbyte data platform tier 2 500 remote lean a open source etl https://airbyte.com/careers", "Tier": "Tier 2"}, {"Company": "Cockroach Labs", "Category": "Database", "Approx Employees": "800", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Distributed DB", "Career Site": "https://www.cockroachlabs.com/careers/", "Search Text": "cockroach labs database tier 2 800 remote lean a distributed db https://www.cockroachlabs.com/careers/", "Tier": "Tier 2"}, {"Company": "Redis", "Category": "Database", "Approx Employees": "1200", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "In-memory platform", "Career Site": "https://redis.io/careers/", "Search Text": "redis database tier 2 1200 remote lean a in-memory platform https://redis.io/careers/", "Tier": "Tier 2"}, {"Company": "Pinecone", "Category": "Vector DB", "Approx Employees": "500", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "AI search", "Career Site": "https://www.pinecone.io/careers/", "Search Text": "pinecone vector db tier 2 500 remote lean a ai search https://www.pinecone.io/careers/", "Tier": "Tier 2"}, {"Company": "Neo4j", "Category": "Graph DB", "Approx Employees": "1000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Knowledge graphs", "Career Site": "https://neo4j.com/careers/", "Search Text": "neo4j graph db tier 2 1000 yes lean a knowledge graphs https://neo4j.com/careers/", "Tier": "Tier 2"}, {"Company": "Celonis", "Category": "Process Mining", "Approx Employees": "3000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise workflows", "Career Site": "https://www.celonis.com/careers/", "Search Text": "celonis process mining tier 3 3000 yes lean a enterprise workflows https://www.celonis.com/careers/", "Tier": "Tier 3"}, {"Company": "Retool", "Category": "Internal Tools", "Approx Employees": "600", "Bangalore Presence": "Remote", "PM Leanness": "Very Lean", "Fit For Vikas": "A", "Notes": "App builders", "Career Site": "https://retool.com/careers", "Search Text": "retool internal tools tier 2 600 remote very lean a app builders https://retool.com/careers", "Tier": "Tier 2"}, {"Company": "Workato", "Category": "Automation", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Workflow automation", "Career Site": "https://www.workato.com/careers", "Search Text": "workato automation tier 3 1500 yes lean a workflow automation https://www.workato.com/careers", "Tier": "Tier 3"}, {"Company": "UiPath", "Category": "Automation", "Approx Employees": "4000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "RPA", "Career Site": "https://www.uipath.com/company/careers", "Search Text": "uipath automation tier 3 4000 yes lean a rpa https://www.uipath.com/company/careers", "Tier": "Tier 3"}, {"Company": "Automation Anywhere", "Category": "Automation", "Approx Employees": "3000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise automation", "Career Site": "https://www.automationanywhere.com/company/careers", "Search Text": "automation anywhere automation tier 3 3000 yes lean a enterprise automation https://www.automationanywhere.com/company/careers", "Tier": "Tier 3"}, {"Company": "Freshworks", "Category": "SaaS", "Approx Employees": "5000", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "Large SaaS suite", "Career Site": "https://www.freshworks.com/company/careers/", "Search Text": "freshworks saas tier 2 5000 yes moderate b+ large saas suite https://www.freshworks.com/company/careers/", "Tier": "Tier 2"}, {"Company": "Zoho", "Category": "SaaS", "Approx Employees": "18000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Huge product ecosystem", "Career Site": "https://www.zoho.com/careers/", "Search Text": "zoho saas tier 2 18000 yes lean b+ huge product ecosystem https://www.zoho.com/careers/", "Tier": "Tier 2"}, {"Company": "Chargebee", "Category": "SaaS", "Approx Employees": "1800", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Billing systems", "Career Site": "https://www.chargebee.com/careers/", "Search Text": "chargebee saas tier 2 1800 yes lean b+ billing systems https://www.chargebee.com/careers/", "Tier": "Tier 2"}, {"Company": "MoEngage", "Category": "SaaS", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Engagement platform", "Career Site": "https://www.moengage.com/careers/", "Search Text": "moengage saas tier 2 1500 yes lean b+ engagement platform https://www.moengage.com/careers/", "Tier": "Tier 2"}, {"Company": "Darwinbox", "Category": "SaaS", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "HR platform", "Career Site": "https://darwinbox.com/careers/", "Search Text": "darwinbox saas tier 3 1500 yes lean b+ hr platform https://darwinbox.com/careers/", "Tier": "Tier 3"}, {"Company": "Razorpay", "Category": "Fintech", "Approx Employees": "3500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Payments platform", "Career Site": "https://razorpay.com/jobs/", "Search Text": "razorpay fintech tier 2 3500 yes lean b+ payments platform https://razorpay.com/jobs/", "Tier": "Tier 2"}, {"Company": "Juspay", "Category": "Fintech", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Payment infra", "Career Site": "https://juspay.in/careers/", "Search Text": "juspay fintech tier 3 1500 yes lean b+ payment infra https://juspay.in/careers/", "Tier": "Tier 3"}, {"Company": "Perfios", "Category": "Fintech/Data", "Approx Employees": "4000", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "Data-heavy fintech", "Career Site": "https://www.perfios.com/careers/", "Search Text": "perfios fintech/data tier 3 4000 yes moderate b+ data-heavy fintech https://www.perfios.com/careers/", "Tier": "Tier 3"}, {"Company": "Yubi", "Category": "Fintech", "Approx Employees": "1500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Debt marketplace", "Career Site": "https://www.go-yubi.com/careers/", "Search Text": "yubi fintech tier 3 1500 yes lean b+ debt marketplace https://www.go-yubi.com/careers/", "Tier": "Tier 3"}, {"Company": "OpenAI", "Category": "AI", "Approx Employees": "5000+", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Difficult entry", "Career Site": "https://openai.com/careers/", "Search Text": "openai ai tier 3 5000+ remote lean dream difficult entry https://openai.com/careers/", "Tier": "Tier 3"}, {"Company": "Anthropic", "Category": "AI", "Approx Employees": "2000+", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Difficult entry", "Career Site": "https://www.anthropic.com/careers", "Search Text": "anthropic ai tier 3 2000+ remote lean dream difficult entry https://www.anthropic.com/careers", "Tier": "Tier 3"}, {"Company": "Perplexity", "Category": "AI", "Approx Employees": "1000", "Bangalore Presence": "Growing", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "AI search", "Career Site": "https://www.perplexity.ai/hub/careers", "Search Text": "perplexity ai tier 3 1000 growing lean dream ai search https://www.perplexity.ai/hub/careers", "Tier": "Tier 3"}, {"Company": "Cohere", "Category": "AI", "Approx Employees": "1500", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Enterprise AI", "Career Site": "https://cohere.com/careers", "Search Text": "cohere ai tier 3 1500 remote lean dream enterprise ai https://cohere.com/careers", "Tier": "Tier 3"}, {"Company": "Mistral AI", "Category": "AI", "Approx Employees": "1000", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Foundation models", "Career Site": "https://mistral.ai/careers", "Search Text": "mistral ai ai tier 3 1000 remote lean dream foundation models https://mistral.ai/careers", "Tier": "Tier 3"}, {"Company": "Palantir", "Category": "Data Platform", "Approx Employees": "4000", "Bangalore Presence": "Limited", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Complex systems", "Career Site": "https://www.palantir.com/careers/", "Search Text": "palantir data platform tier 3 4000 limited lean dream complex systems https://www.palantir.com/careers/", "Tier": "Tier 3"}, {"Company": "Anduril", "Category": "Defense Tech", "Approx Employees": "4000", "Bangalore Presence": "Limited", "PM Leanness": "Lean", "Fit For Vikas": "Dream", "Notes": "Systems-heavy", "Career Site": "https://www.anduril.com/careers/", "Search Text": "anduril defense tech tier 3 4000 limited lean dream systems-heavy https://www.anduril.com/careers/", "Tier": "Tier 3"}, {"Company": "GitLab", "Category": "Dev Tools", "Approx Employees": "2500", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Developer platform", "Career Site": "https://about.gitlab.com/jobs/", "Search Text": "gitlab dev tools tier 2 2500 remote lean a developer platform https://about.gitlab.com/jobs/", "Tier": "Tier 2"}, {"Company": "GitHub", "Category": "Dev Tools", "Approx Employees": "3500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Developer ecosystem", "Career Site": "https://www.github.careers/careers-home", "Search Text": "github dev tools tier 3 3500 yes lean a developer ecosystem https://www.github.careers/careers-home", "Tier": "Tier 3"}, {"Company": "Docker", "Category": "Dev Tools", "Approx Employees": "1000", "Bangalore Presence": "Remote", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Containers", "Career Site": "https://www.docker.com/career-openings/", "Search Text": "docker dev tools tier 2 1000 remote lean a containers https://www.docker.com/career-openings/", "Tier": "Tier 2"}, {"Company": "Okta", "Category": "Security", "Approx Employees": "7000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Identity platform", "Career Site": "https://www.okta.com/company/careers/", "Search Text": "okta security tier 2 7000 yes lean a identity platform https://www.okta.com/company/careers/", "Tier": "Tier 2"}, {"Company": "CrowdStrike", "Category": "Security", "Approx Employees": "11000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Security platform", "Career Site": "https://www.crowdstrike.com/careers/", "Search Text": "crowdstrike security tier 3 11000 yes lean a security platform https://www.crowdstrike.com/careers/", "Tier": "Tier 3"}, {"Company": "Wiz", "Category": "Security", "Approx Employees": "2000", "Bangalore Presence": "Growing", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Cloud security", "Career Site": "https://www.wiz.io/careers", "Search Text": "wiz security tier 2 2000 growing lean a cloud security https://www.wiz.io/careers", "Tier": "Tier 2"}, {"Company": "Palo Alto Networks", "Category": "Security", "Approx Employees": "15000+", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise security", "Career Site": "https://jobs.paloaltonetworks.com/", "Search Text": "palo alto networks security tier 2 15000+ yes lean a enterprise security https://jobs.paloaltonetworks.com/", "Tier": "Tier 2"}, {"Company": "SentinelOne", "Category": "Security", "Approx Employees": "2500", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Cybersecurity", "Career Site": "https://www.sentinelone.com/careers/", "Search Text": "sentinelone security tier 3 2500 yes lean a cybersecurity https://www.sentinelone.com/careers/", "Tier": "Tier 3"}, {"Company": "Splunk", "Category": "Observability", "Approx Employees": "7000", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Data/monitoring", "Career Site": "https://www.splunk.com/en_us/careers.html", "Search Text": "splunk observability tier 2 7000 yes lean a data/monitoring https://www.splunk.com/en_us/careers.html", "Tier": "Tier 2"}, {"Company": "Google", "Category": "Cloud & AI", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Cloud, AI, enterprise platforms", "Career Site": "", "Search Text": "google cloud & ai tier 1 — yes lean a+ cloud, ai, enterprise platforms "}, {"Company": "Microsoft", "Category": "Cloud & AI", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Azure, security, enterprise platforms", "Career Site": "", "Search Text": "microsoft cloud & ai tier 1 — yes lean a+ azure, security, enterprise platforms "}, {"Company": "Salesforce", "Category": "SaaS", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Enterprise SaaS, AI, platform", "Career Site": "", "Search Text": "salesforce saas tier 1 — yes lean a+ enterprise saas, ai, platform "}, {"Company": "Adobe", "Category": "SaaS", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Enterprise SaaS, platforms, monetization", "Career Site": "", "Search Text": "adobe saas tier 1 — yes lean a+ enterprise saas, platforms, monetization "}, {"Company": "Cisco", "Category": "Infrastructure", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Networking, security, cloud", "Career Site": "", "Search Text": "cisco infrastructure tier 1 — yes lean a+ networking, security, cloud "}, {"Company": "SAP", "Category": "Enterprise Software", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A+", "Notes": "Enterprise software and platforms", "Career Site": "", "Search Text": "sap enterprise software tier 1 — yes moderate a+ enterprise software and platforms "}, {"Company": "Amazon / AWS", "Category": "Cloud & AI", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Cloud, platforms, enterprise products", "Career Site": "", "Search Text": "amazon / aws cloud & ai tier 1 — yes lean a+ cloud, platforms, enterprise products "}, {"Company": "Oracle", "Category": "Enterprise Software", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A", "Notes": "Cloud, databases, enterprise software", "Career Site": "", "Search Text": "oracle enterprise software tier 1 — yes moderate a cloud, databases, enterprise software "}, {"Company": "Intuit", "Category": "Fintech/SaaS", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Fintech, SaaS, product-led", "Career Site": "", "Search Text": "intuit fintech/saas tier 1 — yes lean a fintech, saas, product-led "}, {"Company": "Uber", "Category": "Marketplace & Mobility", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Large-scale platform/product", "Career Site": "", "Search Text": "uber marketplace & mobility tier 1 — yes lean a large-scale platform/product "}, {"Company": "Walmart Global Tech", "Category": "Commerce Platform", "Tier": "Tier 1", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A", "Notes": "Commerce and platform products", "Career Site": "", "Search Text": "walmart global tech commerce platform tier 1 — yes moderate a commerce and platform products "}, {"Company": "Broadcom", "Category": "Infrastructure", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Infrastructure, enterprise software", "Career Site": "", "Search Text": "broadcom infrastructure tier 2 — yes lean a infrastructure, enterprise software "}, {"Company": "Dell Technologies", "Category": "Infrastructure", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A", "Notes": "Infrastructure and enterprise technology", "Career Site": "", "Search Text": "dell technologies infrastructure tier 2 — yes moderate a infrastructure and enterprise technology "}, {"Company": "HP", "Category": "Enterprise Technology", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "Enterprise technology", "Career Site": "", "Search Text": "hp enterprise technology tier 2 — yes moderate b+ enterprise technology "}, {"Company": "IBM", "Category": "Enterprise Software", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "A", "Notes": "Cloud, AI, enterprise platforms", "Career Site": "", "Search Text": "ibm enterprise software tier 2 — yes moderate a cloud, ai, enterprise platforms "}, {"Company": "Workday", "Category": "SaaS", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise SaaS", "Career Site": "", "Search Text": "workday saas tier 2 — yes lean a enterprise saas "}, {"Company": "Zoom", "Category": "SaaS", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Collaboration SaaS", "Career Site": "", "Search Text": "zoom saas tier 2 — yes lean a collaboration saas "}, {"Company": "Twilio", "Category": "Developer Platform", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Communications/API platform", "Career Site": "", "Search Text": "twilio developer platform tier 2 — yes lean a communications/api platform "}, {"Company": "Dropbox", "Category": "SaaS", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Cloud collaboration", "Career Site": "", "Search Text": "dropbox saas tier 2 — yes lean a cloud collaboration "}, {"Company": "Fortinet", "Category": "Security", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise security", "Career Site": "", "Search Text": "fortinet security tier 2 — yes lean a enterprise security "}, {"Company": "Zscaler", "Category": "Security", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Cloud security", "Career Site": "", "Search Text": "zscaler security tier 2 — yes lean a+ cloud security "}, {"Company": "CyberArk", "Category": "Security", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Identity security", "Career Site": "", "Search Text": "cyberark security tier 2 — yes lean a identity security "}, {"Company": "SailPoint", "Category": "Security", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Identity security", "Career Site": "", "Search Text": "sailpoint security tier 2 — yes lean a identity security "}, {"Company": "Rubrik", "Category": "Data Infrastructure", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A+", "Notes": "Data security and cloud", "Career Site": "", "Search Text": "rubrik data infrastructure tier 2 — yes lean a+ data security and cloud "}, {"Company": "Akamai", "Category": "Infrastructure", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Edge and cloud platform", "Career Site": "", "Search Text": "akamai infrastructure tier 2 — yes lean a edge and cloud platform "}, {"Company": "Druva", "Category": "Data Infrastructure", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Data security and SaaS", "Career Site": "", "Search Text": "druva data infrastructure tier 2 — yes lean a data security and saas "}, {"Company": "HighRadius", "Category": "SaaS", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise finance SaaS", "Career Site": "", "Search Text": "highradius saas tier 2 — yes lean a enterprise finance saas "}, {"Company": "CleverTap", "Category": "SaaS", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Customer engagement", "Career Site": "", "Search Text": "clevertap saas tier 2 — yes lean a customer engagement "}, {"Company": "Uniphore", "Category": "Enterprise AI", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Enterprise conversational AI", "Career Site": "", "Search Text": "uniphore enterprise ai tier 2 — yes lean a enterprise conversational ai "}, {"Company": "ThoughtSpot", "Category": "Data & AI", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Analytics and AI", "Career Site": "", "Search Text": "thoughtspot data & ai tier 2 — yes lean a analytics and ai "}, {"Company": "PhonePe", "Category": "Fintech", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Payments and financial platform", "Career Site": "", "Search Text": "phonepe fintech tier 2 — yes lean a payments and financial platform "}, {"Company": "Flipkart", "Category": "Commerce Platform", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Large-scale commerce platform", "Career Site": "", "Search Text": "flipkart commerce platform tier 2 — yes lean a large-scale commerce platform "}, {"Company": "Meesho", "Category": "Commerce Platform", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Marketplace platform", "Career Site": "", "Search Text": "meesho commerce platform tier 2 — yes lean a marketplace platform "}, {"Company": "Myntra", "Category": "Commerce Platform", "Tier": "Tier 2", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Commerce/product platform", "Career Site": "", "Search Text": "myntra commerce platform tier 2 — yes lean a commerce/product platform "}, {"Company": "Swiggy", "Category": "Marketplace & Consumer", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Consumer marketplace", "Career Site": "", "Search Text": "swiggy marketplace & consumer tier 3 — yes lean b+ consumer marketplace "}, {"Company": "Groww", "Category": "Fintech", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Consumer fintech", "Career Site": "", "Search Text": "groww fintech tier 3 — yes lean b+ consumer fintech "}, {"Company": "CRED", "Category": "Fintech", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Consumer fintech", "Career Site": "", "Search Text": "cred fintech tier 3 — yes lean b+ consumer fintech "}, {"Company": "Jio Platforms", "Category": "Platform", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "Digital platforms", "Career Site": "", "Search Text": "jio platforms platform tier 3 — yes moderate b+ digital platforms "}, {"Company": "Airtel", "Category": "Telecom & Platform", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "Telecom and digital platforms", "Career Site": "", "Search Text": "airtel telecom & platform tier 3 — yes moderate b+ telecom and digital platforms "}, {"Company": "Mindtickle", "Category": "SaaS", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Sales enablement SaaS", "Career Site": "", "Search Text": "mindtickle saas tier 3 — yes lean a sales enablement saas "}, {"Company": "LeadSquared", "Category": "SaaS", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "CRM/marketing automation", "Career Site": "", "Search Text": "leadsquared saas tier 3 — yes lean b+ crm/marketing automation "}, {"Company": "PayU", "Category": "Fintech", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "B+", "Notes": "Payments and fintech", "Career Site": "", "Search Text": "payu fintech tier 3 — yes lean b+ payments and fintech "}, {"Company": "Yellow.ai", "Category": "Enterprise AI", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "Conversational AI", "Career Site": "", "Search Text": "yellow.ai enterprise ai tier 3 — yes lean a conversational ai "}, {"Company": "Fractal", "Category": "Data & AI", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Lean", "Fit For Vikas": "A", "Notes": "AI and analytics", "Career Site": "", "Search Text": "fractal data & ai tier 3 — yes lean a ai and analytics "}, {"Company": "Tiger Analytics", "Category": "Data & AI", "Tier": "Tier 3", "Approx Employees": "—", "Bangalore Presence": "Yes", "PM Leanness": "Moderate", "Fit For Vikas": "B+", "Notes": "AI and analytics", "Career Site": "", "Search Text": "tiger analytics data & ai tier 3 — yes moderate b+ ai and analytics "}];
+    const state = { search: "", tier: "", category: "", fit: "", lean: "", presence: "" };
+    const els = {
+      rows: document.querySelector("#rows"),
+      empty: document.querySelector("#empty"),
+      search: document.querySelector("#search"),
+      tier: document.querySelector("#tier"),
+      category: document.querySelector("#category"),
+      fit: document.querySelector("#fit"),
+      lean: document.querySelector("#lean"),
+      presence: document.querySelector("#presence"),
+      clear: document.querySelector("#clear"),
+      statTotal: document.querySelector("#statTotal"),
+      statTop: document.querySelector("#statTop"),
+      statBlr: document.querySelector("#statBlr"),
+      statCategories: document.querySelector("#statCategories")
+    };
+
+    const domain = (url) => {
+      try { return new URL(url).hostname.replace(/^www\./, ""); }
+      catch { return "Career site"; }
+    };
+
+    const escapeHtml = (value) => String(value || "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;"
+    }[char]));
+
+    function fitTone(fit) {
+      if (fit === "A+" || fit === "A") return "tag-green";
+      if (fit === "B" || fit === "B+") return "tag-amber";
+      if (fit === "Dream") return "tag-red";
+      return "";
+    }
+
+    function row(job) {
+      const url = job["Career Site"];
+      return `<tr>
+        <td class="company-cell">${escapeHtml(job.Company)}</td>
+        <td><span class="chip">${escapeHtml(job.Tier)}</span></td>
+        <td><span class="chip">${escapeHtml(job.Category)}</span></td>
+        <td class="num-cell">${escapeHtml(job["Approx Employees"])}</td>
+        <td><span class="chip">${escapeHtml(job["Bangalore Presence"])}</span></td>
+        <td><span class="chip">${escapeHtml(job["PM Leanness"])}</span></td>
+        <td><span class="chip fit ${fitTone(job["Fit For Vikas"])}">${escapeHtml(job["Fit For Vikas"])}</span></td>
+        <td class="notes-cell" title="${escapeHtml(job.Notes)}">${escapeHtml(job.Notes)}</td>
+        <td><span class="domain">${escapeHtml(domain(url))}</span></td>
+        <td><a class="career" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open</a></td>
+      </tr>`;
+    }
+
+    function matches(job) {
+      const query = state.search.trim().toLowerCase();
+      return (!query || job["Search Text"].includes(query))
+        && (!state.tier || job.Tier === state.tier)
+        && (!state.category || job.Category === state.category)
+        && (!state.fit || job["Fit For Vikas"] === state.fit)
+        && (!state.lean || job["PM Leanness"] === state.lean)
+        && (!state.presence || job["Bangalore Presence"] === state.presence);
+    }
+
+    function render() {
+      const visible = jobs.filter(matches);
+      els.rows.innerHTML = visible.map(row).join("");
+      els.empty.style.display = visible.length ? "none" : "block";
+      els.statTotal.textContent = visible.length;
+      els.statTop.textContent = visible.filter(job => job["Fit For Vikas"] === "A+").length;
+      els.statBlr.textContent = visible.filter(job => job["Bangalore Presence"].toLowerCase() === "yes").length;
+      els.statCategories.textContent = new Set(visible.map(job => job.Category)).size;
+    }
+
+    for (const key of ["search", "category", "fit", "lean", "presence"]) {
+      els[key].addEventListener("input", event => {
+        state[key] = event.target.value;
+        render();
+      });
+    }
+
+    els.clear.addEventListener("click", () => {
+      for (const key of Object.keys(state)) {
+        state[key] = "";
+        els[key].value = "";
+      }
+      render();
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+        document.querySelectorAll(".panel").forEach(item => item.classList.remove("active"));
+        tab.classList.add("active");
+        document.querySelector(`#${tab.dataset.tab}Panel`).classList.add("active");
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
