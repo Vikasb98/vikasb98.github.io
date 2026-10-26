@@ -2,26 +2,26 @@
 
 const projects = [
   {
-    id:'loan-servicing', title:'Making complex servicing manageable.', name:'Loan servicing & syndication',
+    id:'loan-servicing', title:'Loan servicing & syndication', name:'Loan servicing & syndication',
     type:'Professional case study', category:'platforms', filters:['platforms'], art:'b2b',
-    description:'Modeling loan events, participant allocations, and lender-level cash flows into operational workflows.',
-    tags:['Product ownership','Financial platforms','SQL'], cta:'Read case study',
+    description:'Loan events, participant allocations, and lender-level cash flows.',
+    tags:['Product ownership','Financial platforms','SQL'], cta:'Case study',
     summary:'Product ownership for loan-servicing capabilities, from requirements and event modeling to UAT and releases. A high-level account of enterprise product work.',
     role:'Product Owner · Loan Servicing', tools:'SQL · requirements · UAT · release planning',
     scope:'Professional experience, summarized without employer interfaces or proprietary implementation details.',
     context:'Private-credit operations involve connected events: a change to a loan or lender allocation can affect balances, interest, and cash flows. The product challenge is to make those dependencies usable and understandable for operations teams.',
     contributions:['Owned requirements and delivery for loan-servicing workflows, including rollover, merge, split, and indexation capabilities.','Enhanced syndication workflows for lender substitutions, participant allocations, balance transfers, and interest recalculation.','Helped deliver lender-level cash flows and used SQL to investigate behavior and validate product outcomes.','Worked with developers, QA, and operations stakeholders through backlog planning, UAT, and releases.'],
     outcome:'Expanded support for complex syndication events and lender-specific servicing. Detailed commercial results and transaction-level evidence are intentionally excluded.',
-    thinking:'This work reflects a product approach grounded in event dependencies, edge cases, and operational validation. The illustration is a conceptual model of allocations, created for this portfolio; it does not represent a production interface or data model.',
+    thinking:'This work reflects a product approach grounded in event dependencies, edge cases, and operational validation. Validation focused on the effects of an event across balances, allocations, and downstream cash flows.',
     missing:'Approved screenshots and a narrated walkthrough have not been supplied.',
     chapters:['The operational problem and user journey','How loan events affect participant-level servicing','Requirements, validation, and release ownership'],
     demo:null
   },
   {
-    id:'workflow', title:'Less chasing. More workflow.', name:'Configurable workflow management',
+    id:'workflow', title:'Workflow management', name:'Configurable workflow management',
     type:'Case study + independent demo', category:'platforms', filters:['platforms','automation','prototype'], art:'workflow',
-    description:'Recurring tasks, business-day due dates, reminders, and transitions for repeatable operations.',
-    tags:['Workflow design','Recurrence','Interactive demo'], cta:'Explore case & demo',
+    description:'Recurring tasks, due-date rules, reminders, and workflow transitions.',
+    tags:['Workflow design','Recurrence','Interactive demo'], cta:'Case study & demo',
     summary:'Configurable task-management capabilities for operational teams, paired with a small, independently recreated workflow demo using fictional tasks.',
     role:'Product Owner · Workflow Management', tools:'User stories · workflow rules · wireframes · UAT',
     scope:'Professional summary + independently created browser demo. No production screens or code are used.',
@@ -33,10 +33,10 @@ const projects = [
     chapters:['The recurring-work problem','A synthetic task moving through three states','Business-day due-date behavior'], demo:'workflow'
   },
   {
-    id:'ai-onboarding', title:'From dense documents to usable data.', name:'AI-assisted agreement onboarding',
+    id:'ai-onboarding', title:'AI-assisted onboarding', name:'AI-assisted agreement onboarding',
     type:'Case study + independent demo', category:'ai', filters:['ai','platforms','prototype'], art:'ai',
-    description:'Human-reviewed extraction that turns lengthy facility agreements into structured onboarding data.',
-    tags:['Applied AI','Human review','Azure OpenAI'], cta:'Explore case & demo',
+    description:'Facility-agreement extraction with human review.',
+    tags:['Applied AI','Human review','Azure OpenAI'], cta:'Case study & demo',
     summary:'An AI-assisted onboarding feature for long facility agreements, with human review built into the workflow. The accompanying demo uses a short fictional agreement and deterministic sample results.',
     role:'Product ownership · AI-assisted onboarding', tools:'Azure OpenAI / GPT · requirements · scenario validation',
     scope:'High-level professional summary. The interactive example is a deterministic UI simulation with synthetic content.',
@@ -49,10 +49,10 @@ const projects = [
     chapters:['The manual onboarding bottleneck','Extraction with review and correction','Validation approach and reported workflow outcome'], demo:'extraction'
   },
   {
-    id:'automation', title:'A shorter path to product confidence.', name:'Hybrid API + UI automation',
-    type:'Technical case study + demo', category:'automation', filters:['automation','prototype'], art:'automation',
-    description:'Combining API and browser automation to reduce repetitive validation work and summarize runs.',
-    tags:['Python','Playwright','PyTest'], cta:'Explore case & demo',
+    id:'automation', title:'API + UI automation', name:'Hybrid API + UI automation',
+    type:'Case study + independent demo', category:'automation', filters:['automation','prototype'], art:'automation',
+    description:'API and browser checks using Playwright and PyTest.',
+    tags:['Python','Playwright','PyTest'], cta:'Case study & demo',
     summary:'A hybrid API–UI automation framework using Playwright and PyTest, with AI-assisted run summaries. The portfolio runner is an illustrative simulation of coverage selection.',
     role:'Hands-on framework building · product validation', tools:'Python · Playwright · PyTest · API + browser automation',
     scope:'Professional summary with an independently created simulated runner. No employer endpoints, scripts, or test data are included.',
@@ -65,46 +65,37 @@ const projects = [
     chapters:['Why repeated validation was slow','The API and UI split at a conceptual level','Coverage selection and a readable run summary'], demo:'runner'
   },
   {
-    id:'rolefit', title:'A clearer view of role fit.', name:'RoleFit · PM résumé scorer',
+    id:'rolefit', title:'PM résumé scorer', name:'RoleFit · PM résumé scorer',
     type:'Independent project', category:'ai', filters:['ai'], art:'rolefit',
-    description:'A résumé-to-role comparison project for product management applications, with a working private app.',
-    tags:['Independent build','Career tooling','Working app'], cta:'View project',
+    description:'An independent résumé-to-job-description comparison tool.',
+    tags:['Independent build','Career tooling','Working app'], cta:'Project details',
     summary:'An independent résumé scorer project for product management roles, created to support résumé review and job-description alignment. A separate hosted app is available.',
     role:'Independent project · product concept and iteration', tools:'Résumé analysis · job-description alignment · browser app',
     scope:'Independent work outside employer systems. The hosted app has its own private access controls.',
     context:'Comparing a product-management résumé with a job description can help identify missing evidence, unclear positioning, and relevant skills to make more visible.',
     contributions:['Defined a PM-focused résumé review and scoring project.','Iterated on extracting text directly from uploaded résumés rather than requiring duplicate manual entry.','Pursued an online experience accessible from desktop and mobile.'],
     outcome:'A working private app is linked below. Its score should be treated as an advisory signal, not an employer’s ATS result or a prediction of an interview invitation.',
-    thinking:'The portfolio thumbnail is conceptual and contains no candidate data. No claims are made here about matching proprietary ATS algorithms, universal résumé scores, or verified hiring outcomes.',
+    thinking:'The portfolio contains no candidate data. No claims are made here about matching proprietary ATS algorithms, universal résumé scores, or verified hiring outcomes.',
     missing:'A walkthrough video and approved real project screenshots have not been supplied.',
     chapters:['The résumé-review problem','Using the scorer and interpreting its feedback','What a score can and cannot tell you'], demo:null,
     external:'https://rolefit-pm-vikas.hazyboar512.chatgpt.site'
   },
   {
-    id:'rag-lab', title:'Learning by building AI systems.', name:'Local RAG experiments',
+    id:'rag-lab', title:'Local RAG experiments', name:'Local RAG experiments',
     type:'Independent experiment', category:'ai', filters:['ai'], art:'rag',
-    description:'Hands-on exploration of retrieval and document-grounded interfaces outside the workplace.',
-    tags:['RAG','LangChain','Gradio'], cta:'View experiment brief',
+    description:'Local retrieval experiments with watsonx, LangChain, and Gradio.',
+    tags:['RAG','LangChain','Gradio'], cta:'Experiment notes',
     summary:'Independent experimentation with local retrieval-augmented generation using IBM watsonx, LangChain, and Gradio. This entry is a concise project brief until source assets and a demo are supplied.',
     role:'Independent learner & builder', tools:'IBM watsonx · LangChain · Gradio',
     scope:'Independent experiment. No deployed demo, source repository, or validated benchmark has been supplied for this entry.',
     context:'Building a small RAG interface is a way to investigate how retrieval, document context, and model responses fit together beyond a standalone chat prompt.',
     contributions:['Experimented with a local RAG setup using IBM watsonx, LangChain, and Gradio.','Used hands-on prototyping to explore retrieval-based AI interfaces.'],
     outcome:'This is a learning experiment. Retrieval quality, dataset size, latency, and production readiness are not claimed here; supporting results and demo assets are still to be added.',
-    thinking:'The diagram is a conceptual retrieval flow, not a verified architecture of the experiment. A future walkthrough can use a public or synthetic document set and show both a grounded answer and a retrieval failure.',
+    thinking:'A future walkthrough can use a public or synthetic document set and show both a grounded answer and a retrieval failure.',
     missing:'Repository, evaluation results, screenshots, and demo video are placeholders pending supplied assets.',
     chapters:['A public or synthetic document set','A retrieval-grounded answer and its context','A failure case and what to improve next'], demo:null
   }
 ];
-
-const illustrations = {
-  b2b:`<span class="art-label">ILLUSTRATION / LENDER-LEVEL FLOWS</span><div class="mini-platform"><div class="ledger"><div class="ledger-label">FACILITY <span>◇</span></div><div class="ledger-line"></div><div class="ledger-line"></div><div class="ledger-value">100<small> %</small></div></div><span class="split-arrows">↗<br>→<br>↘</span><div class="participants"><div class="participant"><i></i>Participant A</div><div class="participant"><i></i>Participant B</div><div class="participant"><i></i>Participant C</div></div></div>`,
-  workflow:`<span class="art-label">INDEPENDENT RECREATION / SYNTHETIC TASKS</span><div class="mini-board"><div class="mini-column"><b>QUEUED</b><div class="mini-task"></div><div class="mini-task"></div></div><div class="mini-column"><b>IN REVIEW</b><div class="mini-task"></div></div><div class="mini-column"><b>COMPLETE</b><div class="mini-task"></div><div class="mini-task"></div></div></div><span class="recurrence-chip">↻ Recurrence, without the repetition.</span>`,
-  ai:`<span class="art-label">INDEPENDENT RECREATION / FICTIONAL AGREEMENT</span><div class="ai-paper"><div class="paper-title">Facility Agreement</div><div class="paper-line"></div><div class="paper-line"></div><div class="paper-line"></div><div class="paper-line"></div><div class="paper-line"></div><div class="paper-line"></div></div><div class="ai-fields"><div>Currency <strong>USD</strong></div><div>Facility <strong>12.0m</strong></div><div>Margin <strong>Review ↗</strong></div><span>◌ Human review, built in</span></div>`,
-  automation:`<span class="art-label">ILLUSTRATION / HYBRID AUTOMATION</span><div class="mini-terminal"><div class="terminal-top"><i></i><i></i><i></i></div><p>$ run illustrative_checks<br>✓ API setup<br>✓ UI workflow<br>✓ Result validation</p><p class="terminal-result">→ A summary you can act on.</p></div>`,
-  rolefit:`<span class="art-label">CONCEPTUAL PREVIEW / ILLUSTRATIVE SCORE</span><div class="mini-score"><div class="score-ring">?<small>/100</small></div><div class="score-lines"><b>PM ROLE ALIGNMENT</b><div></div><div></div><div></div></div></div><span class="concept-label">EVIDENCE · RELEVANCE · CLARITY</span>`,
-  rag:`<span class="art-label">CONCEPTUAL FLOW / EXPERIMENT BRIEF</span><div class="rag-network"><div class="rag-box"><span>▤</span><b>Documents</b></div><span class="rag-join">→</span><div class="rag-box"><span>⌕</span><b>Retrieval</b></div><span class="rag-join">→</span><div class="rag-box"><span>✧</span><b>Response</b></div></div><span class="rag-answer">Bring relevant context into the conversation.</span>`
-};
 
 const grid = document.querySelector('#projects');
 const dialog = document.querySelector('#case-dialog');
@@ -123,7 +114,7 @@ let runnerDone=false;
 function renderProjects(){
   const term=search.value.trim().toLowerCase();
   const visible=projects.filter(p=>(activeFilter==='all'||p.filters.includes(activeFilter))&&[p.name,p.title,p.description,p.type,...p.tags].join(' ').toLowerCase().includes(term));
-  grid.innerHTML=visible.map(p=>`<article class="project-card"><div class="project-art art-${p.art}" aria-hidden="true">${illustrations[p.art]}</div><div class="card-body"><p class="card-eyebrow"><span class="tiny-dot"></span>${p.type}</p><h3>${p.name}</h3><p class="card-description">${p.description}</p><div class="card-tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div><div class="card-bottom"><span>${p.cta}</span><span aria-hidden="true">↗</span></div></div><button class="project-link" data-open="${p.id}" aria-label="${p.cta}: ${p.name}"></button></article>`).join('');
+  grid.innerHTML=visible.map(p=>`<article class="project-card"><div class="card-body"><p class="card-eyebrow">${p.type}</p><h3>${p.name}</h3><p class="card-description">${p.description}</p><div class="card-tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div><div class="card-bottom"><span>${p.cta}</span><span aria-hidden="true">→</span></div></div><button class="project-link" data-open="${p.id}" aria-label="${p.cta}: ${p.name}"></button></article>`).join('');
   document.querySelector('#empty-state').hidden=visible.length>0;
   document.querySelector('#result-count').textContent=`Showing ${visible.length} project${visible.length===1?'':'s'}`;
   document.querySelectorAll('[data-filter]').forEach(b=>{const selected=b.dataset.filter===activeFilter;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
@@ -191,11 +182,11 @@ function announce(message){const toast=document.querySelector('#toast');toast.te
 function refreshDemo(){const p=projects.find(x=>x.id===currentProject);document.querySelector('#case-panel').innerHTML=prototype(p);}
 function demoLabel(message){return `<div class="demo-label"><i></i>${message}</div>`;}
 
-function workflowDemo(){return `${demoLabel('INDEPENDENT UI RECREATION · SYNTHETIC TASKS · CHANGES LAST ONLY IN THIS VIEW')}<div class="demo-shell"><div class="demo-bar"><span>Flowdesk / Operations</span><small>Portfolio demo</small></div><div class="demo-content"><div class="demo-board">${['Queued','In review','Complete'].map((label,state)=>`<div class="demo-lane"><h4>${label.toUpperCase()} <span>${tasks.filter(t=>t.state===state).length}</span></h4>${tasks.filter(t=>t.state===state).map(t=>`<div class="demo-task ${state===2?'is-done':''}"><b>${t.title}</b><small>${t.owner}</small>${state<2?`<button class="task-move" data-move="${t.id}">${state===0?'Start review →':'Complete ✓'}</button>`:'<span class="review-badge ok">Complete ✓</span>'}</div>`).join('')}</div>`).join('')}</div><div class="demo-actions"><button class="text-button" data-reset-workflow>Reset demo</button></div></div></div><h3>A small rule, made visible.</h3><p>A fictional recurring review falls on Sunday, 1 November 2026. In this illustration, weekend due dates roll forward to the next weekday; holidays are not modeled.</p>${recurrenceAdjusted?'<div class="demo-feedback" role="status">Next due date: <strong>Monday, 2 November 2026</strong><br>Sunday → next weekday. This is a synthetic example.</div>':'<button class="button secondary" data-recurrence>Apply business-day rule →</button>'}<p class="demo-note">This three-state board and weekend rule were built for the portfolio. They do not reproduce an employer’s interface, configuration, or implementation.</p>`;}
+function workflowDemo(){return `${demoLabel('INDEPENDENT UI RECREATION · SYNTHETIC TASKS · CHANGES LAST ONLY IN THIS VIEW')}<div class="demo-shell"><div class="demo-bar"><span>Flowdesk / Operations</span><small>Portfolio demo</small></div><div class="demo-content"><div class="demo-board">${['Queued','In review','Complete'].map((label,state)=>`<div class="demo-lane"><h4>${label.toUpperCase()} <span>${tasks.filter(t=>t.state===state).length}</span></h4>${tasks.filter(t=>t.state===state).map(t=>`<div class="demo-task ${state===2?'is-done':''}"><b>${t.title}</b><small>${t.owner}</small>${state<2?`<button class="task-move" data-move="${t.id}">${state===0?'Start review →':'Complete ✓'}</button>`:'<span class="review-badge ok">Complete ✓</span>'}</div>`).join('')}</div>`).join('')}</div><div class="demo-actions"><button class="text-button" data-reset-workflow>Reset demo</button></div></div></div><h3>Business-day due dates</h3><p>A fictional recurring review falls on Sunday, 1 November 2026. In this illustration, weekend due dates roll forward to the next weekday; holidays are not modeled.</p>${recurrenceAdjusted?'<div class="demo-feedback" role="status">Next due date: <strong>Monday, 2 November 2026</strong><br>Sunday → next weekday. This is a synthetic example.</div>':'<button class="button secondary" data-recurrence>Apply business-day rule →</button>'}<p class="demo-note">This three-state board and weekend rule were built for the portfolio. They do not reproduce an employer’s interface, configuration, or implementation.</p>`;}
 
-function extractionDemo(){return `${demoLabel('DETERMINISTIC UI SIMULATION · SYNTHETIC AGREEMENT · NO MODEL CALL OR FILE UPLOAD')}<div class="demo-shell"><div class="demo-bar"><span>Document → review → confirm</span><small>Sample only</small></div><div class="demo-content"><div class="demo-source"><small>FICTIONAL EXCERPT / CREATED FOR THIS DEMO</small>Example Cedar Facility provides a commitment of USD 12,000,000. The facility matures on 30 June 2031. The applicable margin is 2.75% per annum.</div>${!extractionDone?'<button class="button primary" data-extract>Show sample extraction →</button>':`<table class="extraction-table"><thead><tr><th scope="col">FIELD</th><th scope="col">SAMPLE VALUE</th><th scope="col">REVIEW STATE</th></tr></thead><tbody><tr><td>Currency</td><td>USD</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Commitment</td><td>12,000,000</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Maturity</td><td>2031-06-30</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Margin</td><td>${extractionReviewed?'275 bps':'2.75% → 275 bps?'}</td><td><span class="review-badge ${extractionReviewed?'ok':''}">${extractionReviewed?'Confirmed':'Needs confirmation'}</span></td></tr></tbody></table>${extractionReviewed?'<div class="demo-feedback" role="status">Margin conversion confirmed. Review remains part of the workflow; no live agreement or model output is involved.</div>':'<div class="demo-actions"><button class="button primary" data-review>Confirm margin: 275 bps ✓</button></div>'}<button class="text-button" data-reset-extraction>Reset sample</button>`}</div></div><h3>Make the review boundary explicit.</h3><p>The sample separates an extracted value from a user-confirmed value. In a real product, this boundary needs evaluation, source traceability, and a clear path for corrections.</p><p class="demo-note">All displayed extraction values are hardcoded for this example. No accuracy, confidence, or production-performance claim is inferred from the demo.</p>`;}
+function extractionDemo(){return `${demoLabel('DETERMINISTIC UI SIMULATION · SYNTHETIC AGREEMENT · NO MODEL CALL OR FILE UPLOAD')}<div class="demo-shell"><div class="demo-bar"><span>Document → review → confirm</span><small>Sample only</small></div><div class="demo-content"><div class="demo-source"><small>FICTIONAL EXCERPT / CREATED FOR THIS DEMO</small>Example Cedar Facility provides a commitment of USD 12,000,000. The facility matures on 30 June 2031. The applicable margin is 2.75% per annum.</div>${!extractionDone?'<button class="button primary" data-extract>Show sample extraction →</button>':`<table class="extraction-table"><thead><tr><th scope="col">FIELD</th><th scope="col">SAMPLE VALUE</th><th scope="col">REVIEW STATE</th></tr></thead><tbody><tr><td>Currency</td><td>USD</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Commitment</td><td>12,000,000</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Maturity</td><td>2031-06-30</td><td><span class="review-badge ok">Source matched</span></td></tr><tr><td>Margin</td><td>${extractionReviewed?'275 bps':'2.75% → 275 bps?'}</td><td><span class="review-badge ${extractionReviewed?'ok':''}">${extractionReviewed?'Confirmed':'Needs confirmation'}</span></td></tr></tbody></table>${extractionReviewed?'<div class="demo-feedback" role="status">Margin conversion confirmed. Review remains part of the workflow; no live agreement or model output is involved.</div>':'<div class="demo-actions"><button class="button primary" data-review>Confirm margin: 275 bps ✓</button></div>'}<button class="text-button" data-reset-extraction>Reset sample</button>`}</div></div><h3>Review step</h3><p>The sample separates an extracted value from a user-confirmed value. In a real product, this boundary needs evaluation, source traceability, and a clear path for corrections.</p><p class="demo-note">All displayed extraction values are hardcoded for this example. No accuracy, confidence, or production-performance claim is inferred from the demo.</p>`;}
 
-function runnerDemo(){const choices=['Allocation balance','Workflow transition','Interest recalculation'];return `${demoLabel('SIMULATED RUNNER · FICTIONAL SCENARIOS · NO API OR BROWSER TESTS ARE EXECUTED')}<div class="demo-shell"><div class="demo-bar"><span>Validation / illustrative coverage</span><small>Portfolio demo</small></div><div class="demo-content"><div class="scenario-options">${choices.map((c,i)=>`<label><input name="scenario" type="checkbox" value="${i}" ${!Array.isArray(runnerDone)||runnerDone.includes(String(i))?'checked':''}>${c}</label>`).join('')}</div><button class="button primary" data-run>Simulate selected checks →</button>${Array.isArray(runnerDone)?runnerDone.length?`<pre class="demo-logs" aria-live="polite">SIMULATION — no real tests executed\n${runnerDone.map(i=>`✓ ${choices[Number(i)]}: sample pass`).join('\n')}\n\n${runnerDone.length}/${runnerDone.length} illustrative checks complete.\nSummary: selected sample scenarios passed.</pre>`:'<div class="demo-feedback" role="status">Choose at least one sample scenario, then run the simulation.</div>':'<p class="demo-note">Select the example coverage you want to inspect. Results are predetermined to illustrate the report experience.</p>'}</div></div><h3>Make execution easy to interpret.</h3><p>A useful run report should explain which scenarios were exercised and what needs attention. This simulated view illustrates the reporting interaction without revealing an internal framework or connecting to real systems.</p>`;}
+function runnerDemo(){const choices=['Allocation balance','Workflow transition','Interest recalculation'];return `${demoLabel('SIMULATED RUNNER · FICTIONAL SCENARIOS · NO API OR BROWSER TESTS ARE EXECUTED')}<div class="demo-shell"><div class="demo-bar"><span>Validation / illustrative coverage</span><small>Portfolio demo</small></div><div class="demo-content"><div class="scenario-options">${choices.map((c,i)=>`<label><input name="scenario" type="checkbox" value="${i}" ${!Array.isArray(runnerDone)||runnerDone.includes(String(i))?'checked':''}>${c}</label>`).join('')}</div><button class="button primary" data-run>Simulate selected checks →</button>${Array.isArray(runnerDone)?runnerDone.length?`<pre class="demo-logs" aria-live="polite">SIMULATION — no real tests executed\n${runnerDone.map(i=>`✓ ${choices[Number(i)]}: sample pass`).join('\n')}\n\n${runnerDone.length}/${runnerDone.length} illustrative checks complete.\nSummary: selected sample scenarios passed.</pre>`:'<div class="demo-feedback" role="status">Choose at least one sample scenario, then run the simulation.</div>':'<p class="demo-note">Select the example coverage you want to inspect. Results are predetermined to illustrate the report experience.</p>'}</div></div><h3>Run summary</h3><p>A useful run report should explain which scenarios were exercised and what needs attention. This simulated view illustrates the reporting interaction without revealing an internal framework or connecting to real systems.</p>`;}
 
 renderProjects();
 route();
