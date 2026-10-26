@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Vikas B — Product Manager. Experience in loan servicing, workflow management, banking payments, and AI-assisted operations. Case studies and independent projects.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Vikas B · Product Manager</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#work">Skip to projects</a>
+  <header class="header wrap">
+    <a class="brand" href="#overview" aria-label="Vikas B home">Vikas B</a>
+    <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#about">About</a></nav>
+  </header>
+  <main>
+    <section id="overview" class="hero wrap" aria-labelledby="hero-title">
+      <h1 id="hero-title">Product Manager</h1>
+      <p class="hero-description">I own loan servicing and workflow products at Oxane Partners. Previously, I worked on banking payments software at Oracle Financial Services.</p>
+      <p class="location">Bengaluru preferred</p>
+    </section>
+    <section id="work" class="work-section wrap" aria-labelledby="work-title">
+      <div class="section-heading"><h2 id="work-title">Selected projects</h2></div>
+      <div class="work-controls">
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button class="filter active" data-filter="all" aria-pressed="true">All work <span>6</span></button>
+          <button class="filter" data-filter="platforms" aria-pressed="false">Product platforms</button>
+          <button class="filter" data-filter="automation" aria-pressed="false">Automation</button>
+          <button class="filter" data-filter="ai" aria-pressed="false">AI</button>
+          <button class="filter" data-filter="prototype" aria-pressed="false">Demos</button>
+        </div>
+        <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search projects" autocomplete="off"></label>
+      </div>
+      <div class="result-meta"><span id="result-count" role="status" aria-live="polite">Showing 6 projects</span></div>
+      <div id="projects" class="project-grid"></div>
+      <div id="empty-state" class="empty-state" hidden><h3>No matching projects.</h3><p>Try another keyword or reset the filters.</p><button class="button secondary" id="reset-filters">Show all work</button></div>
+      <p class="work-note">Case studies summarise professional work. Demos are independent examples using synthetic data.</p>
+    </section>
+    <section id="about" class="about wrap" aria-labelledby="about-title">
+      <div class="about-intro"><h2 id="about-title">About</h2><p>My work covers requirements, prioritisation, workflow design, UAT, and release planning. I collaborate with developers, QA, and operations teams.</p><p>Earlier, I worked on production software for Oracle Banking Payments and FLEXCUBE, including SWIFT message generation.</p></div>
+      <div class="about-details"><div class="toolbox"><h3>Tools</h3><p>SQL, Python, Playwright, PyTest, Azure OpenAI, Figma, HTML and JavaScript.</p></div><p class="asset-placeholder">Résumé and contact links: to be added.</p></div>
+    </section>
+  </main>
+  <footer class="footer wrap"><span>Vikas B · Product portfolio</span><a href="#overview">Back to top ↑</a></footer>
+  <dialog id="case-dialog" aria-labelledby="case-title"><div id="case-content"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">Enable JavaScript to browse the projects and demos.</div></noscript>
+</body>
+</html>
