@@ -79,21 +79,6 @@ const projects = [
     missing:'A walkthrough video and approved real project screenshots have not been supplied.',
     chapters:['The résumé-review problem','Using the scorer and interpreting its feedback','What a score can and cannot tell you'], demo:null,
     external:'https://rolefit-pm-vikas.hazyboar512.chatgpt.site'
-  },
-  {
-    id:'rag-lab', title:'Local RAG experiments', name:'Local RAG experiments',
-    type:'Independent experiment', category:'ai', filters:['ai'], art:'rag',
-    description:'Local retrieval experiments with watsonx, LangChain, and Gradio.',
-    tags:['RAG','LangChain','Gradio'], cta:'Experiment notes',
-    summary:'Independent experimentation with local retrieval-augmented generation using IBM watsonx, LangChain, and Gradio. This entry is a concise project brief until source assets and a demo are supplied.',
-    role:'Independent learner & builder', tools:'IBM watsonx · LangChain · Gradio',
-    scope:'Independent experiment. No deployed demo, source repository, or validated benchmark has been supplied for this entry.',
-    context:'Building a small RAG interface is a way to investigate how retrieval, document context, and model responses fit together beyond a standalone chat prompt.',
-    contributions:['Experimented with a local RAG setup using IBM watsonx, LangChain, and Gradio.','Used hands-on prototyping to explore retrieval-based AI interfaces.'],
-    outcome:'This is a learning experiment. Retrieval quality, dataset size, latency, and production readiness are not claimed here; supporting results and demo assets are still to be added.',
-    thinking:'A future walkthrough can use a public or synthetic document set and show both a grounded answer and a retrieval failure.',
-    missing:'Repository, evaluation results, screenshots, and demo video are placeholders pending supplied assets.',
-    chapters:['A public or synthetic document set','A retrieval-grounded answer and its context','A failure case and what to improve next'], demo:null
   }
 ];
 
